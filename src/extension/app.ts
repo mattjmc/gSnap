@@ -25,6 +25,7 @@ import {
 import {
     deinitSettings,
     getBoolSetting,
+    getStrSetting,
     gridSettings,
     initSettings,
 } from './settings';
@@ -33,7 +34,7 @@ import * as SETTINGS from './settings_data';
 
 import { cloneLayout, Layout, LayoutsSettings, WorkspaceMonitorSettings } from './layouts';
 import { LayoutsUtils } from './layouts_utils';
-import ModifiersManager, { MODIFIERS_ENUM } from './modifiers';
+import ModifiersManager from './modifiers';
 
 /*****************************************************************
 
@@ -309,10 +310,11 @@ class App {
             if (!validWindow(win)) return;
 
             const useModifier = getBoolSetting(SETTINGS.USE_MODIFIER);
+            const modifierKey = getStrSetting(SETTINGS.MODIFIER_KEY);
             this.isGrabbing = true;
 
             if (useModifier &&
-                !this.modifiersManager.isHolding(MODIFIERS_ENUM.CONTROL))
+                !this.modifiersManager.isHolding(modifierKey))
                 return;
 
             activeMonitors().forEach(m => {
@@ -322,6 +324,7 @@ class App {
 
         global.display.connect('grab-op-end', (_display: Display, win: Window) => {
             const useModifier = getBoolSetting(SETTINGS.USE_MODIFIER);
+            const modifierKey = getStrSetting(SETTINGS.MODIFIER_KEY);
             this.isGrabbing = false;
 
             if (!validWindow(win)) {
@@ -331,7 +334,7 @@ class App {
             activeMonitors().forEach(m => {
                 this.tabManager[m.index]?.hide();
 
-                if (!useModifier || this.modifiersManager.isHolding(MODIFIERS_ENUM.CONTROL)) {
+                if (!useModifier || this.modifiersManager.isHolding(modifierKey)) {
                     if (!trackedWindows.includes(win)) {
                         trackedWindows.push(win);
                     }
@@ -341,7 +344,7 @@ class App {
                     return;
                 }
 
-                if (useModifier && !this.modifiersManager.isHolding(MODIFIERS_ENUM.CONTROL) && trackedWindows.includes(win)) {
+                if (useModifier && !this.modifiersManager.isHolding(modifierKey) && trackedWindows.includes(win)) {
                     trackedWindows.splice(trackedWindows.indexOf(win), 1);
                 }
             });
@@ -353,7 +356,8 @@ class App {
                     return;
                 }
 
-                if (this.modifiersManager.isHolding(MODIFIERS_ENUM.CONTROL)) {
+                const modifierKey = getStrSetting(SETTINGS.MODIFIER_KEY);
+                if (this.modifiersManager.isHolding(modifierKey)) {
                     activeMonitors().forEach(m => this.tabManager[m.index]?.show());
                 } else {
                     activeMonitors().forEach(m => this.tabManager[m.index]?.hide());

@@ -131,7 +131,17 @@
 		</key>
 		<key type = "b" name="use-modifier">
 			<default>false</default>
-			<summary>Hold CTRL to snap windows</summary>
+			<summary>Hold modifier to snap windows</summary>
+		</key>
+		<key type = "s" name="modifier-key">
+			<choices>
+				<choice value='Shift'/>
+				<choice value='Control'/>
+				<choice value='Alt'/>
+				<choice value='Super'/>
+			</choices>
+			<default>'Control'</default>
+			<summary>Modifier key for window snapping</summary>
 		</key>
 		<key type = "b" name="global-presets">
 			<default>true</default>

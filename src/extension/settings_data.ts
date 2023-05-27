@@ -59,7 +59,7 @@ export type KeyBindingSettingName = (
 
 // A setting name for a string-valued setting.
 export type StringSettingName = (
-    "");
+    "modifier-key");
 
 // Any valid setting name.
 export type AnySettingName = (
@@ -73,6 +73,7 @@ export type AnySettingName = (
     "insets-secondary-left" |
     "insets-secondary-right" |
     "insets-secondary-top" |
+    "modifier-key" |
     "moveresize-enabled" |
     "preset-resize-1" |
     "preset-resize-10" |
@@ -139,6 +140,9 @@ export class ParsedSettings {
 
     /** Top gap around border of screen for secondary monitor */
     ["insets-secondary-top"]: number = 0;
+
+    /** Modifier key for window snapping */
+    ["modifier-key"]: string = 'Control';
 
     /** Enables shortcuts for moving and resizing the current window. */
     ["moveresize-enabled"]: boolean = true;
@@ -239,7 +243,7 @@ export class ParsedSettings {
     /** Show tabs for windows in each zone. */
     ["show-tabs"]: boolean = true;
 
-    /** Hold CTRL to snap windows */
+    /** Hold modifier to snap windows */
     ["use-modifier"]: boolean = false;
 
     /** Gaps between windows in the middle of screen */
@@ -256,6 +260,7 @@ export const INSETS_SECONDARY_BOTTOM = "insets-secondary-bottom";
 export const INSETS_SECONDARY_LEFT = "insets-secondary-left";
 export const INSETS_SECONDARY_RIGHT = "insets-secondary-right";
 export const INSETS_SECONDARY_TOP = "insets-secondary-top";
+export const MODIFIER_KEY = "modifier-key";
 export const MOVERESIZE_ENABLED = "moveresize-enabled";
 export const PRESET_RESIZE_1 = "preset-resize-1";
 export const PRESET_RESIZE_10 = "preset-resize-10";

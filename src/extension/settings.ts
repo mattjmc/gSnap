@@ -43,6 +43,15 @@ export function getIntSetting(settingsValue: SETTINGS.NumberSettingName) {
     }
 }
 
+export function getStrSetting(settingName: SETTINGS.StringSettingName) {
+    const value = settings.get_string(settingName);
+    if (value === undefined) {
+        log("Undefined settings " + settingName);
+        return '';
+    }
+    return value;
+}
+
 export function initSettings(changed_settings: () => void) {
     settings = ExtensionUtils.getSettings();
     settingsConnection = settings.connect('changed', changed_settings);

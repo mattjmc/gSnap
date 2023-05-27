@@ -12,6 +12,13 @@ export enum MODIFIERS_ENUM {
     SUPER = 6
 }
 
+export const MODIFIERS_NAMES: { [key: string]: MODIFIERS_ENUM } = {
+    'Shift':   MODIFIERS_ENUM.SHIFT,
+    'Control': MODIFIERS_ENUM.CONTROL,
+    'Alt':     MODIFIERS_ENUM.ALT,
+    'Super':   MODIFIERS_ENUM.SUPER,
+}
+
 export const MODIFIERS: { [key: number]: MODIFIERS_ENUM } = {
     0: MODIFIERS_ENUM.SHIFT,
     2: MODIFIERS_ENUM.CONTROL,
@@ -38,8 +45,8 @@ export default class ModifiersManager {
         }
     }
 
-    public isHolding(modifier: MODIFIERS_ENUM): boolean {
-        return this.modifiers.includes(modifier);
+    public isHolding(modifier_name: keyof typeof MODIFIERS_NAMES): boolean {
+        return this.modifiers.includes(MODIFIERS_NAMES[modifier_name]);
     }
 
     public connect(name: string, callback: Function): number {
