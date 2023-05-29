@@ -5,6 +5,7 @@ const Gtk = imports.gi.Gtk;
 const Gio = imports.gi.Gio;
 
 import * as SETTINGS from "./settings_data";
+import { MODIFIERS_NAMES } from './modifiers';
 
 // Globals
 const pretty_names = {
@@ -164,7 +165,8 @@ class PrefsBuilder {
         this.add_check("Show icon", SETTINGS.SHOW_ICON, bs_grid, settings);
         this.add_check("Show tabs", SETTINGS.SHOW_TABS, bs_grid, settings);
         this.add_check("Enable accelerators for moving and resizing windows", SETTINGS.MOVERESIZE_ENABLED, bs_grid, settings);
-        this.add_check("Hold modifier to snap windows", SETTINGS.USE_MODIFIER, bs_grid, settings);
+        //this.add_check("Hold modifier to snap windows", SETTINGS.USE_MODIFIER, bs_grid, settings);
+        this.add_check_dropdown("Hold modifier to snap windows", SETTINGS.USE_MODIFIER, [...Object.keys(MODIFIERS_NAMES), ''], SETTINGS.MODIFIER_KEY, bs_grid, settings);
         this.add_check("Debug", SETTINGS.DEBUG, bs_grid, settings);
         let text = "To see debug messages, in terminal run journalctl /usr/bin/gnome-shell -f";
         bs_grid.attach_next_to(new Gtk.Label({
@@ -261,6 +263,16 @@ class PrefsBuilder {
         let check = new Gtk.CheckButton({ label: check_label, margin_top: 6 });
         settings.bind(SETTINGS, check, 'active', Gio.SettingsBindFlags.DEFAULT);
         grid.attach_next_to(check, null, Gtk.PositionType.BOTTOM, 1, 1);
+    }
+
+    add_check_dropdown(check_label: string, check_SETTINGS: string, dropdown_strings: string[], dropdown_SETTINGS: string, grid: any, settings: any) {
+        let check = new Gtk.CheckButton({ label: check_label, margin_top: 6 });
+        settings.bind(check_SETTINGS, check, 'active', Gio.SettingsBindFlags.DEFAULT);
+        grid.attach_next_to(check, null, Gtk.PositionType.BOTTOM, 1, 1);
+
+        let dropdown = new Gtk.DropDown(dropdown_strings);
+        settings.bind(dropdown_SETTINGS, dropdown, 'list-factory', Gio.SettingsBindFlags.DEFAULT);
+        grid.attach_next_to(dropdown, null, Gtk.PositionType.BOTTOM, 1, 1);
     }
 
     add_int(int_label: string, SETTINGS: string, grid: any, settings: any, minv: number, maxv: number, incre: number, page: number) {
